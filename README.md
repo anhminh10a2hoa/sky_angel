@@ -1,50 +1,112 @@
-# React + TypeScript + Vite
+# Sky Angel Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+Sky Angel is a web-based game developed using HTML, CSS, and JavaScript with React.js. The game is designed to work on a tablet resolution of 1024x768 pixels and centers itself on larger screens. The game involves flying an aircraft through the sky, avoiding birds, and collecting parachutes and stars to increase fuel and score.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Aircraft Movement**: Use arrow keys to move the aircraft up, down, left, and right.
+- **Fuel Management**: The aircraft starts with 10 fuel points, decreasing by 1 point per second. Collect parachutes to gain 10 fuel points.
+- **Star Collection**: Collect stars to increase your score.
+- **Bird Avoidance**: Avoid birds to keep the game going. Colliding with a bird ends the game.
+- **Pause/Resume**: Pause the game by pressing the space bar or clicking the pause button.
+- **Game Over**: The game ends when fuel reaches zero or the aircraft collides with a bird.
+- **User Registration**: Upon game over, enter your name to save your score and view the ranking.
+- **Ranking System**: View the ranking of players based on stars collected and flight time.
+- **Increasing Difficulty**: The game gets harder as time increases, with more birds appearing and faster movement required.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Installation
 
-- Configure the top-level `parserOptions` property like this:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/anhminh10a2hoa/sky_angel
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd sky-angel
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+## Usage
+
+- **Start Game**: Click the "Start Game" button to begin.
+- **Controls**:
+  - **Arrow Keys**: Move the aircraft.
+  - **Space Bar**: Pause/Resume the game.
+- **Game Over**: When the game ends, enter your name and click "Continue" to submit your score.
+
+## Project Structure
+
+```
+sky-angel/
+├── node_modules/
+├── public/
+├── src/
+│   ├── __mocks__/
+│   ├── __tests__/
+│   ├── assets/
+│   ├── components/
+│   │   ├── Aircraft.tsx
+│   │   ├── Bird.tsx
+│   │   ├── Cloud.tsx
+│   │   ├── GameOver.tsx
+│   │   ├── Parachute.tsx
+│   │   ├── RankingScreen.tsx
+│   │   ├── Start.tsx
+│   │   └── StartingScreen.tsx
+│   ├── hooks/
+│   │   └── useGameLogic.ts
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   ├── TS_setupTests.ts
+│   └── TS_vite-env.d.ts
+├── .eslintrc.json
+├── .gitignore
+├── .prettierc.json
+├── eslint.config.js
+├── index.html
+├── jest.config.js
+├── package-lock.json
+├── package.json
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Dependencies
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react';
+- **React**: ^19.0.0
+- **React DOM**: ^19.0.0
+- **Axios**: ^1.7.9
+- **Vite**: ^6.1.0
+- **TypeScript**: ~5.7.2
+- **Jest**: ^29.7.0 (for testing)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-});
-```
+## Scripts
+
+- **Start Development Server**: `npm run dev`
+- **Build Project**: `npm run build`
+- **Lint Code**: `npm run lint`
+- **Fix Linting Issues**: `npm run lint:fix`
+- **Run Tests**: `npm run test`
+- **Format Code**: `npm run format`
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
