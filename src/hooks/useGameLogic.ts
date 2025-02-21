@@ -15,7 +15,7 @@ const useGameLogic = () => {
   const [time, setTime] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [isGameStarted, setIsGameStarted] = useState(false); // Track if the game has started
+  const [isGameStarted, setIsGameStarted] = useState(false);
 
   // Game elements
   const [clouds, setClouds] = useState<Position[]>([]);
@@ -39,19 +39,16 @@ const useGameLogic = () => {
 
   // Initialize game elements
   useEffect(() => {
-    // Generate initial clouds
     const initialClouds = Array.from({ length: 5 }, () =>
       generateRandomPosition(1024, 768)
     );
     setClouds(initialClouds);
 
-    // Generate initial birds
     const initialBirds = Array.from({ length: 3 }, () =>
       generateRandomPosition(1024, 768)
     );
     setBirds(initialBirds);
 
-    // Generate initial parachutes and stars
     const initialParachutes = Array.from({ length: 2 }, () =>
       generateRandomPosition(1024, 768)
     );
@@ -68,18 +65,16 @@ const useGameLogic = () => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setClouds(
-        (prev) =>
-          prev
-            .map((cloud) => ({
-              x: cloud.x - cloudSpeed, // Move clouds with increased speed
-              y: cloud.y,
-            }))
-            .filter((cloud) => cloud.x > -100) // Remove clouds that are off-screen
+      setClouds((prev) =>
+        prev
+          .map((cloud) => ({
+            x: cloud.x - cloudSpeed,
+            y: cloud.y,
+          }))
+          .filter((cloud) => cloud.x > -100)
       );
 
-      // Add new clouds continuously based on difficulty
-      if (Math.random() < 0.01 + difficultyLevel * 0.005) {
+      if (Math.random() < 0.02 + difficultyLevel * 0.005) {
         setClouds((prev) => [
           ...prev,
           { x: 1024, y: Math.floor(Math.random() * 768) },
@@ -95,21 +90,19 @@ const useGameLogic = () => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setBirds(
-        (prev) =>
-          prev
-            .map((bird) => ({
-              x: bird.x + birdSpeed, // Move birds to the right with increased speed
-              y: bird.y,
-            }))
-            .filter((bird) => bird.x < 1024) // Remove birds that are off-screen
+      setBirds((prev) =>
+        prev
+          .map((bird) => ({
+            x: bird.x + birdSpeed,
+            y: bird.y,
+          }))
+          .filter((bird) => bird.x < 1024)
       );
 
-      // Add new birds continuously based on difficulty
       if (Math.random() < 0.01 + difficultyLevel * 0.005) {
         setBirds((prev) => [
           ...prev,
-          { x: -50, y: Math.floor(Math.random() * 768) }, // Start birds on the left side
+          { x: -50, y: Math.floor(Math.random() * 768) },
         ]);
       }
     }, 50);
@@ -122,27 +115,24 @@ const useGameLogic = () => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setParachutes(
-        (prev) =>
-          prev
-            .map((parachute) => ({
-              x: parachute.x,
-              y: parachute.y + parachuteSpeed, // Move parachutes with increased speed
-            }))
-            .filter((parachute) => parachute.y < 768) // Remove parachutes that are off-screen
+      setParachutes((prev) =>
+        prev
+          .map((parachute) => ({
+            x: parachute.x,
+            y: parachute.y + parachuteSpeed,
+          }))
+          .filter((parachute) => parachute.y < 768)
       );
 
-      setStarsElements(
-        (prev) =>
-          prev
-            .map((star) => ({
-              x: star.x,
-              y: star.y + starSpeed, // Move stars with increased speed
-            }))
-            .filter((star) => star.y < 768) // Remove stars that are off-screen
+      setStarsElements((prev) =>
+        prev
+          .map((star) => ({
+            x: star.x,
+            y: star.y + starSpeed,
+          }))
+          .filter((star) => star.y < 768)
       );
 
-      // Add new parachutes and stars continuously based on difficulty
       if (Math.random() < 0.01 + difficultyLevel * 0.005) {
         setParachutes((prev) => [
           ...prev,
@@ -159,14 +149,7 @@ const useGameLogic = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, [
-    isGameOver,
-    isPaused,
-    isGameStarted,
-    parachuteSpeed,
-    starSpeed,
-    difficultyLevel,
-  ]);
+  }, [isGameOver, isPaused, isGameStarted, parachuteSpeed, starSpeed, difficultyLevel]);
 
   // Handle aircraft movement
   const handleKeyDown = useCallback(
@@ -237,10 +220,7 @@ const useGameLogic = () => {
   useEffect(() => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
-    const newDifficultyLevel = Math.min(
-      Math.floor(time / 30),
-      maxDifficultyLevel
-    ); // Increase difficulty every 30 seconds
+    const newDifficultyLevel = Math.min(Math.floor(time / 30), maxDifficultyLevel); // Increase difficulty every 30 seconds
     setDifficultyLevel(newDifficultyLevel);
 
     // Adjust speeds based on difficulty
@@ -353,11 +333,32 @@ const useGameLogic = () => {
     setBirds([]);
     setParachutes([]);
     setStarsElements([]);
-    setBirdSpeed(2); // Reset bird speed
-    setParachuteSpeed(1); // Reset parachute speed
-    setStarSpeed(1); // Reset star speed
-    setCloudSpeed(1); // Reset cloud speed
-    setDifficultyLevel(0); // Reset difficulty level
+    setBirdSpeed(2);
+    setParachuteSpeed(1);
+    setStarSpeed(1);
+    setCloudSpeed(1);
+    setDifficultyLevel(0);
+
+    // Regenerate initial game elements
+    const initialClouds = Array.from({ length: 7 }, () =>
+      generateRandomPosition(1024, 768)
+    );
+    setClouds(initialClouds);
+
+    const initialBirds = Array.from({ length: 5 }, () =>
+      generateRandomPosition(1024, 768)
+    );
+    setBirds(initialBirds);
+
+    const initialParachutes = Array.from({ length: 10 }, () =>
+      generateRandomPosition(1024, 768)
+    );
+    setParachutes(initialParachutes);
+
+    const initialStars = Array.from({ length: 10 }, () =>
+      generateRandomPosition(1024, 768)
+    );
+    setStarsElements(initialStars);
   }, []);
 
   return {
