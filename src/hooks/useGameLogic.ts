@@ -7,11 +7,12 @@ interface Position {
 
 const useGameLogic = () => {
   const [aircraftPosition, setAircraftPosition] = useState<Position>({ x: 512, y: 384 });
-  const [fuel, setFuel] = useState(10);
+  const [fuel, setFuel] = useState(10); // Initial fuel is 10
   const [stars, setStars] = useState(0);
   const [time, setTime] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState(false); // Track if the game has started
 
   // Game elements
   const [clouds, setClouds] = useState<Position[]>([]);
@@ -53,7 +54,7 @@ const useGameLogic = () => {
 
   // Move clouds from right to left
   useEffect(() => {
-    if (isGameOver || isPaused) return;
+    if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
       setClouds((prev) =>
@@ -73,35 +74,35 @@ const useGameLogic = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused]);
+  }, [isGameOver, isPaused, isGameStarted]);
 
-  // Move birds from right to left
+  // Move birds from left to right
   useEffect(() => {
-    if (isGameOver || isPaused) return;
+    if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
       setBirds((prev) =>
         prev.map((bird) => ({
-          x: bird.x - 2,
+          x: bird.x + 2, // Move birds to the right
           y: bird.y,
-        })).filter((bird) => bird.x > -50) // Remove birds that are off-screen
+        })).filter((bird) => bird.x < 1024) // Remove birds that are off-screen
       );
 
       // Add new birds periodically
       if (Math.random() < 0.01) {
         setBirds((prev) => [
           ...prev,
-          { x: 1024, y: Math.floor(Math.random() * 768) },
+          { x: -50, y: Math.floor(Math.random() * 768) }, // Start birds on the left side
         ]);
       }
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused]);
+  }, [isGameOver, isPaused, isGameStarted]);
 
   // Move parachutes and stars from top to bottom
   useEffect(() => {
-    if (isGameOver || isPaused) return;
+    if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
       setParachutes((prev) =>
@@ -135,11 +136,11 @@ const useGameLogic = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused]);
+  }, [isGameOver, isPaused, isGameStarted]);
 
   // Handle aircraft movement
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (isPaused) return;
+    if (isPaused || !isGameStarted) return;
 
     setAircraftPosition((prev) => {
       let newX = prev.x;
@@ -164,7 +165,7 @@ const useGameLogic = () => {
 
       return { x: newX, y: newY };
     });
-  }, [isPaused]);
+  }, [isPaused, isGameStarted]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -173,7 +174,7 @@ const useGameLogic = () => {
 
   // Handle fuel and time
   useEffect(() => {
-    if (isGameOver || isPaused) return;
+    if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
       setTime((prev) => prev + 1);
@@ -181,7 +182,14 @@ const useGameLogic = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused]);
+  }, [isGameOver, isPaused, isGameStarted]);
+
+  // Check if fuel reaches zero
+  useEffect(() => {
+    if (fuel <= 0) {
+      setIsGameOver(true);
+    }
+  }, [fuel]);
 
   // Check for collisions with birds
   useEffect(() => {
@@ -234,7 +242,7 @@ const useGameLogic = () => {
         aircraftRect.y < parachuteRect.y + parachuteRect.height &&
         aircraftRect.y + aircraftRect.height > parachuteRect.y
       ) {
-        setFuel((prev) => prev + 10);
+        setFuel((prev) => prev + 10); // Increase fuel by 10
         setParachutes((prev) => prev.filter((_, i) => i !== index));
       }
     });
@@ -253,7 +261,7 @@ const useGameLogic = () => {
         aircraftRect.y < starRect.y + starRect.height &&
         aircraftRect.y + aircraftRect.height > starRect.y
       ) {
-        setStars((prev) => prev + 1);
+        setStars((prev) => prev + 1); // Increase stars by 1
         setStarsElements((prev) => prev.filter((_, i) => i !== index));
       }
     });
@@ -263,6 +271,10 @@ const useGameLogic = () => {
     setIsPaused((prev) => !prev);
   };
 
+  const startGame = () => {
+    setIsGameStarted(true);
+  };
+
   return {
     aircraftPosition,
     fuel,
@@ -270,7 +282,9 @@ const useGameLogic = () => {
     time,
     isGameOver,
     isPaused,
+    isGameStarted,
     pauseGame,
+    startGame,
     clouds,
     birds,
     parachutes,
