@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import backgroundImage from '../assets/background.jpg';
 
 interface GameOverProps {
   time: number;
@@ -13,15 +15,11 @@ const GameOver: React.FC<GameOverProps> = ({ time, stars, onRestart }) => {
     if (!name) return;
 
     try {
-      // Send data to the server (if needed)
-      await fetch('http://xxxxxxxxx/register.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, time, stars }),
+      await axios.post('http://xxxxxxxxx/register.php', {
+        name,
+        time,
+        stars,
       });
-
       onRestart();
     } catch (error) {
       console.error('Error submitting score:', error);
@@ -59,7 +57,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    backgroundImage: 'url(/src/assets/background.jpg)',
+    backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: '#fff',
