@@ -24,7 +24,7 @@ Sky Angel is a web-based game developed using HTML, CSS, and JavaScript with Rea
    ```
 2. Navigate to the project directory:
    ```bash
-   cd sky-angel
+   cd sky_angel
    ```
 3. Install dependencies:
    ```bash
@@ -46,7 +46,7 @@ Sky Angel is a web-based game developed using HTML, CSS, and JavaScript with Rea
 ## Project Structure
 
 ```
-sky-angel/
+sky_angel/
 ├── node_modules/
 ├── public/
 ├── .github/
