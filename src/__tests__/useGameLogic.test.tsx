@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import useGameLogic from '../useGameLogic';
+import useGameLogic from '../hooks/useGameLogic';
 
 describe('useGameLogic Hook', () => {
   it('initializes with correct default values', () => {

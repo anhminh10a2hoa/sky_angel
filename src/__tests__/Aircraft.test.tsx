@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Aircraft from '../Aircraft';
+import Aircraft from '../components/Aircraft';
 
 describe('Aircraft Component', () => {
   it('renders at the correct position', () => {

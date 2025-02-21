@@ -44,9 +44,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <div style={{ width: '1024px', height: '768px', position: 'relative', margin: 'auto' }}>
+    <div
+      style={{
+        width: '1024px',
+        height: '768px',
+        position: 'relative',
+        margin: 'auto',
+      }}
+    >
       {!isGameStarted && !showRanking && (
-        <StartingScreen onStartGame={handleStartGame} onShowRanking={handleShowRanking} />
+        <StartingScreen
+          onStartGame={handleStartGame}
+          onShowRanking={handleShowRanking}
+        />
       )}
 
       {showRanking && (

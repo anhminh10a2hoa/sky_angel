@@ -6,7 +6,10 @@ interface Position {
 }
 
 const useGameLogic = () => {
-  const [aircraftPosition, setAircraftPosition] = useState<Position>({ x: 512, y: 384 });
+  const [aircraftPosition, setAircraftPosition] = useState<Position>({
+    x: 512,
+    y: 384,
+  });
   const [fuel, setFuel] = useState(10); // Initial fuel is 10
   const [stars, setStars] = useState(0);
   const [time, setTime] = useState(0);
@@ -57,11 +60,14 @@ const useGameLogic = () => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setClouds((prev) =>
-        prev.map((cloud) => ({
-          x: cloud.x - 1,
-          y: cloud.y,
-        })).filter((cloud) => cloud.x > -100) // Remove clouds that are off-screen
+      setClouds(
+        (prev) =>
+          prev
+            .map((cloud) => ({
+              x: cloud.x - 1,
+              y: cloud.y,
+            }))
+            .filter((cloud) => cloud.x > -100) // Remove clouds that are off-screen
       );
 
       // Add new clouds periodically
@@ -81,11 +87,14 @@ const useGameLogic = () => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setBirds((prev) =>
-        prev.map((bird) => ({
-          x: bird.x + 2, // Move birds to the right
-          y: bird.y,
-        })).filter((bird) => bird.x < 1024) // Remove birds that are off-screen
+      setBirds(
+        (prev) =>
+          prev
+            .map((bird) => ({
+              x: bird.x + 2, // Move birds to the right
+              y: bird.y,
+            }))
+            .filter((bird) => bird.x < 1024) // Remove birds that are off-screen
       );
 
       // Add new birds periodically
@@ -105,18 +114,24 @@ const useGameLogic = () => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setParachutes((prev) =>
-        prev.map((parachute) => ({
-          x: parachute.x,
-          y: parachute.y + 1,
-        })).filter((parachute) => parachute.y < 768) // Remove parachutes that are off-screen
+      setParachutes(
+        (prev) =>
+          prev
+            .map((parachute) => ({
+              x: parachute.x,
+              y: parachute.y + 1,
+            }))
+            .filter((parachute) => parachute.y < 768) // Remove parachutes that are off-screen
       );
 
-      setStarsElements((prev) =>
-        prev.map((star) => ({
-          x: star.x,
-          y: star.y + 1,
-        })).filter((star) => star.y < 768) // Remove stars that are off-screen
+      setStarsElements(
+        (prev) =>
+          prev
+            .map((star) => ({
+              x: star.x,
+              y: star.y + 1,
+            }))
+            .filter((star) => star.y < 768) // Remove stars that are off-screen
       );
 
       // Add new parachutes and stars periodically
@@ -139,33 +154,36 @@ const useGameLogic = () => {
   }, [isGameOver, isPaused, isGameStarted]);
 
   // Handle aircraft movement
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (isPaused || !isGameStarted) return;
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (isPaused || !isGameStarted) return;
 
-    setAircraftPosition((prev) => {
-      let newX = prev.x;
-      let newY = prev.y;
+      setAircraftPosition((prev) => {
+        let newX = prev.x;
+        let newY = prev.y;
 
-      switch (event.key) {
-        case 'ArrowLeft':
-          newX = Math.max(0, prev.x - 10);
-          break;
-        case 'ArrowRight':
-          newX = Math.min(974, prev.x + 10);
-          break;
-        case 'ArrowUp':
-          newY = Math.max(0, prev.y - 10);
-          break;
-        case 'ArrowDown':
-          newY = Math.min(718, prev.y + 10);
-          break;
-        default:
-          break;
-      }
+        switch (event.key) {
+          case 'ArrowLeft':
+            newX = Math.max(0, prev.x - 10);
+            break;
+          case 'ArrowRight':
+            newX = Math.min(974, prev.x + 10);
+            break;
+          case 'ArrowUp':
+            newY = Math.max(0, prev.y - 10);
+            break;
+          case 'ArrowDown':
+            newY = Math.min(718, prev.y + 10);
+            break;
+          default:
+            break;
+        }
 
-      return { x: newX, y: newY };
-    });
-  }, [isPaused, isGameStarted]);
+        return { x: newX, y: newY };
+      });
+    },
+    [isPaused, isGameStarted]
+  );
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -303,7 +321,7 @@ const useGameLogic = () => {
     birds,
     parachutes,
     starsElements,
-    resetGame
+    resetGame,
   };
 };
 

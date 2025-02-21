@@ -1,28 +1,46 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+// eslint.config.js
+import js from '@eslint/js';
+import ts from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import globals from 'globals';
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+export default [
+  js.configs.recommended,
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.ts', '**/*.tsx'],
+    ignores: ['node_modules/', 'dist/', 'build/', '**/**/*.test.tsx'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      parser: tsParser,
+      ecmaVersion: 2021,
+      sourceType: 'module',
+      globals: {
+        ...globals.browser, // Add browser globals (e.g., window, document, console, etc.)
+        ...globals.es2021, // Add ES2021 globals (e.g., Promise, Set, Map, etc.)
+        React: 'readonly',
+        JSX: 'readonly',
+      },
     },
     plugins: {
+      '@typescript-eslint': ts,
+      react,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'jsx-a11y': jsxA11y,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off', // Disable prop-types since we're using TypeScript
+      '@typescript-eslint/explicit-module-boundary-types': 'off', // Allow implicit return types
+      '@typescript-eslint/no-unused-vars': 'warn', // Warn about unused variables
+      'react-hooks/rules-of-hooks': 'error', // Enforce rules of hooks
+      'react-hooks/exhaustive-deps': 'warn', // Warn about missing dependencies in useEffect
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   },
-)
+];
