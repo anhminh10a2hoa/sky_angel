@@ -5,7 +5,7 @@ import eslint from 'vite-plugin-eslint';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), eslint()],
-  base: '/sky-angel/',
+  base: '/sky_angel/',
   test: {
     globals: true,
     environment: 'jsdom',
