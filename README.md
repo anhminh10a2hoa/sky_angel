@@ -49,6 +49,9 @@ Sky Angel is a web-based game developed using HTML, CSS, and JavaScript with Rea
 sky-angel/
 ├── node_modules/
 ├── public/
+├── .github/
+│   └── workflows/
+│       └── test.yml
 ├── src/
 │   ├── __mocks__/
 │   ├── __tests__/
