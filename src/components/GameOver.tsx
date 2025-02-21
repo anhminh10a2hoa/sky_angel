@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import backgroundImage from '../assets/background.jpg';
 import axios from 'axios';
+import backgroundImage from '../assets/background.jpg';
 
 interface GameOverProps {
   time: number;
   stars: number;
-  onRestart: () => void;
+  onRestart: () => void; 
 }
 
 const GameOver: React.FC<GameOverProps> = ({ time, stars, onRestart }) => {

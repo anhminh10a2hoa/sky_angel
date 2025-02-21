@@ -8,6 +8,7 @@ interface AircraftProps {
 const Aircraft: React.FC<AircraftProps> = ({ position }) => {
   return (
     <div
+      data-testid="aircraft"
       style={{
         position: 'absolute',
         left: position.x,

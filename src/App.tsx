@@ -7,9 +7,11 @@ import Parachute from './components/Parachute';
 import Star from './components/Star';
 import GameOver from './components/GameOver';
 import StartingScreen from './components/StartingScreen';
-import Ranking from './components/Ranking';
 
 const App: React.FC = () => {
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [showRanking, setShowRanking] = useState(false);
+
   const {
     aircraftPosition,
     fuel,
@@ -17,35 +19,40 @@ const App: React.FC = () => {
     time,
     isGameOver,
     isPaused,
-    isGameStarted,
     pauseGame,
     startGame,
     clouds,
     birds,
     parachutes,
     starsElements,
+    resetGame, // Add a resetGame function to the useGameLogic hook
   } = useGameLogic();
 
-  const [showRanking, setShowRanking] = useState(false);
+  const handleStartGame = () => {
+    setIsGameStarted(true);
+    startGame(); // Start the game logic
+  };
 
   const handleShowRanking = () => {
     setShowRanking(true);
   };
 
-  const handleBackToStart = () => {
+  const handleRestartGame = () => {
+    setIsGameStarted(false); // Reset the game state
     setShowRanking(false);
+    resetGame(); // Reset the game logic
   };
 
   return (
     <div style={{ width: '1024px', height: '768px', position: 'relative', margin: 'auto' }}>
       {!isGameStarted && !showRanking && (
-        <StartingScreen onStartGame={startGame} onShowRanking={handleShowRanking} />
+        <StartingScreen onStartGame={handleStartGame} onShowRanking={handleShowRanking} />
       )}
 
       {showRanking && (
         <div style={styles.rankingContainer}>
-          <Ranking ranking={[]}/>
-          <button style={styles.button} onClick={handleBackToStart}>
+          <h2>Ranking</h2>
+          <button style={styles.button} onClick={handleRestartGame}>
             Back to Start
           </button>
         </div>
@@ -84,7 +91,9 @@ const App: React.FC = () => {
         </>
       )}
 
-      {isGameOver && <GameOver time={time} stars={stars} onRestart={handleBackToStart} />}
+      {isGameOver && (
+        <GameOver time={time} stars={stars} onRestart={handleRestartGame} />
+      )}
     </div>
   );
 };
@@ -96,7 +105,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    backgroundImage: 'url(/src/assets/images/background.jpg)',
+    backgroundImage: 'url(/src/assets/background.jpg)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },

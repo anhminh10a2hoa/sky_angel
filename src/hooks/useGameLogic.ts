@@ -275,6 +275,20 @@ const useGameLogic = () => {
     setIsGameStarted(true);
   };
 
+  const resetGame = useCallback(() => {
+    setAircraftPosition({ x: 512, y: 384 });
+    setFuel(10);
+    setStars(0);
+    setTime(0);
+    setIsGameOver(false);
+    setIsPaused(false);
+    setIsGameStarted(false);
+    setClouds([]);
+    setBirds([]);
+    setParachutes([]);
+    setStarsElements([]);
+  }, []);
+
   return {
     aircraftPosition,
     fuel,
@@ -289,6 +303,7 @@ const useGameLogic = () => {
     birds,
     parachutes,
     starsElements,
+    resetGame
   };
 };
 
