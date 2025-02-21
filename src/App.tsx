@@ -27,12 +27,12 @@ const App: React.FC = () => {
     birds,
     parachutes,
     starsElements,
-    resetGame, // Add a resetGame function to the useGameLogic hook
+    resetGame,
   } = useGameLogic();
 
   const handleStartGame = () => {
     setIsGameStarted(true);
-    startGame(); // Start the game logic
+    startGame();
   };
 
   const handleShowRanking = () => {
@@ -40,9 +40,9 @@ const App: React.FC = () => {
   };
 
   const handleRestartGame = () => {
-    setIsGameStarted(false); // Reset the game state
+    setIsGameStarted(false);
     setShowRanking(false);
-    resetGame(); // Reset the game logic
+    resetGame();
   };
 
   return (
@@ -62,7 +62,7 @@ const App: React.FC = () => {
         />
       )}
 
-      {showRanking && <RankingScreen onBackToStart={handleRestartGame}/>}
+      {showRanking && <RankingScreen onBackToStart={handleRestartGame} />}
 
       {isGameStarted && !isGameOver && (
         <>

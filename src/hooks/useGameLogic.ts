@@ -23,6 +23,14 @@ const useGameLogic = () => {
   const [parachutes, setParachutes] = useState<Position[]>([]);
   const [starsElements, setStarsElements] = useState<Position[]>([]);
 
+  // Difficulty settings
+  const [birdSpeed, setBirdSpeed] = useState(2); // Initial bird speed
+  const [parachuteSpeed, setParachuteSpeed] = useState(1); // Initial parachute speed
+  const [starSpeed, setStarSpeed] = useState(1); // Initial star speed
+  const [cloudSpeed, setCloudSpeed] = useState(1); // Initial cloud speed
+  const [difficultyLevel, setDifficultyLevel] = useState(0); // Current difficulty level
+  const maxDifficultyLevel = 5; // Maximum difficulty level
+
   // Generate random positions for game elements
   const generateRandomPosition = (maxX: number, maxY: number): Position => ({
     x: Math.floor(Math.random() * maxX),
@@ -60,18 +68,17 @@ const useGameLogic = () => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setClouds(
-        (prev) =>
-          prev
-            .map((cloud) => ({
-              x: cloud.x - 1,
-              y: cloud.y,
-            }))
-            .filter((cloud) => cloud.x > -100) // Remove clouds that are off-screen
+      setClouds((prev) =>
+        prev
+          .map((cloud) => ({
+            x: cloud.x - cloudSpeed, // Move clouds with increased speed
+            y: cloud.y,
+          }))
+          .filter((cloud) => cloud.x > -100) // Remove clouds that are off-screen
       );
 
-      // Add new clouds periodically
-      if (Math.random() < 0.02) {
+      // Add new clouds continuously based on difficulty
+      if (Math.random() < 0.01 + difficultyLevel * 0.005) {
         setClouds((prev) => [
           ...prev,
           { x: 1024, y: Math.floor(Math.random() * 768) },
@@ -80,25 +87,24 @@ const useGameLogic = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused, isGameStarted]);
+  }, [isGameOver, isPaused, isGameStarted, cloudSpeed, difficultyLevel]);
 
   // Move birds from left to right
   useEffect(() => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setBirds(
-        (prev) =>
-          prev
-            .map((bird) => ({
-              x: bird.x + 2, // Move birds to the right
-              y: bird.y,
-            }))
-            .filter((bird) => bird.x < 1024) // Remove birds that are off-screen
+      setBirds((prev) =>
+        prev
+          .map((bird) => ({
+            x: bird.x + birdSpeed, // Move birds to the right with increased speed
+            y: bird.y,
+          }))
+          .filter((bird) => bird.x < 1024) // Remove birds that are off-screen
       );
 
-      // Add new birds periodically
-      if (Math.random() < 0.01) {
+      // Add new birds continuously based on difficulty
+      if (Math.random() < 0.01 + difficultyLevel * 0.005) {
         setBirds((prev) => [
           ...prev,
           { x: -50, y: Math.floor(Math.random() * 768) }, // Start birds on the left side
@@ -107,42 +113,40 @@ const useGameLogic = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused, isGameStarted]);
+  }, [isGameOver, isPaused, isGameStarted, birdSpeed, difficultyLevel]);
 
   // Move parachutes and stars from top to bottom
   useEffect(() => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
     const interval = setInterval(() => {
-      setParachutes(
-        (prev) =>
-          prev
-            .map((parachute) => ({
-              x: parachute.x,
-              y: parachute.y + 1,
-            }))
-            .filter((parachute) => parachute.y < 768) // Remove parachutes that are off-screen
+      setParachutes((prev) =>
+        prev
+          .map((parachute) => ({
+            x: parachute.x,
+            y: parachute.y + parachuteSpeed, // Move parachutes with increased speed
+          }))
+          .filter((parachute) => parachute.y < 768) // Remove parachutes that are off-screen
       );
 
-      setStarsElements(
-        (prev) =>
-          prev
-            .map((star) => ({
-              x: star.x,
-              y: star.y + 1,
-            }))
-            .filter((star) => star.y < 768) // Remove stars that are off-screen
+      setStarsElements((prev) =>
+        prev
+          .map((star) => ({
+            x: star.x,
+            y: star.y + starSpeed, // Move stars with increased speed
+          }))
+          .filter((star) => star.y < 768) // Remove stars that are off-screen
       );
 
-      // Add new parachutes and stars periodically
-      if (Math.random() < 0.01) {
+      // Add new parachutes and stars continuously based on difficulty
+      if (Math.random() < 0.01 + difficultyLevel * 0.005) {
         setParachutes((prev) => [
           ...prev,
           { x: Math.floor(Math.random() * 1024), y: 0 },
         ]);
       }
 
-      if (Math.random() < 0.02) {
+      if (Math.random() < 0.02 + difficultyLevel * 0.01) {
         setStarsElements((prev) => [
           ...prev,
           { x: Math.floor(Math.random() * 1024), y: 0 },
@@ -151,7 +155,7 @@ const useGameLogic = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused, isGameStarted]);
+  }, [isGameOver, isPaused, isGameStarted, parachuteSpeed, starSpeed, difficultyLevel]);
 
   // Handle aircraft movement
   const handleKeyDown = useCallback(
@@ -217,6 +221,20 @@ const useGameLogic = () => {
 
     return () => clearInterval(interval);
   }, [isGameOver, isPaused, isGameStarted]);
+
+  // Increase difficulty over time
+  useEffect(() => {
+    if (isGameOver || isPaused || !isGameStarted) return;
+
+    const newDifficultyLevel = Math.min(Math.floor(time / 30), maxDifficultyLevel); // Increase difficulty every 30 seconds
+    setDifficultyLevel(newDifficultyLevel);
+
+    // Adjust speeds based on difficulty
+    setBirdSpeed(2 + newDifficultyLevel); // Increase bird speed
+    setParachuteSpeed(1 + newDifficultyLevel * 0.5); // Increase parachute speed
+    setStarSpeed(1 + newDifficultyLevel * 0.5); // Increase star speed
+    setCloudSpeed(1 + newDifficultyLevel * 0.5); // Increase cloud speed
+  }, [time, isGameOver, isPaused, isGameStarted, maxDifficultyLevel]);
 
   // Check if fuel reaches zero
   useEffect(() => {
@@ -321,6 +339,11 @@ const useGameLogic = () => {
     setBirds([]);
     setParachutes([]);
     setStarsElements([]);
+    setBirdSpeed(2); // Reset bird speed
+    setParachuteSpeed(1); // Reset parachute speed
+    setStarSpeed(1); // Reset star speed
+    setCloudSpeed(1); // Reset cloud speed
+    setDifficultyLevel(0); // Reset difficulty level
   }, []);
 
   return {
