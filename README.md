@@ -67,6 +67,8 @@ sky_angel/
 │   │   └── StartingScreen.tsx
 │   ├── hooks/
 │   │   └── useGameLogic.ts
+│   ├── stores/
+│   │   └── useRankingStore.ts
 │   ├── App.css
 │   ├── App.tsx
 │   ├── index.css
@@ -96,6 +98,7 @@ sky_angel/
 - **Vite**: ^6.1.0
 - **TypeScript**: ~5.7.2
 - **Jest**: ^29.7.0 (for testing)
+- **Zustand**: ^5.0.3 (for state management)
 
 ## Scripts
 
