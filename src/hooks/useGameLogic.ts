@@ -32,30 +32,44 @@ const useGameLogic = () => {
   const maxDifficultyLevel = 5; // Maximum difficulty level
 
   // Generate random positions for game elements
-  const generateRandomPosition = (maxX: number, maxY: number): Position => ({
-    x: Math.floor(Math.random() * maxX),
-    y: Math.floor(Math.random() * maxY),
-  });
+  const generateRandomPosition = (maxX: number, maxY: number, avoidPosition?: Position, minDistance: number = 100): Position => {
+    let x, y;
+    do {
+      x = Math.floor(Math.random() * maxX);
+      y = Math.floor(Math.random() * maxY);
+    } while (
+      avoidPosition &&
+      Math.sqrt((x - avoidPosition.x) ** 2 + (y - avoidPosition.y) ** 2) < minDistance
+    );
+
+    return { x, y };
+  };
 
   // Initialize game elements
   useEffect(() => {
+    const aircraftPosition = { x: 512, y: 384 }; // Aircraft's initial position
+
+    // Generate initial clouds
     const initialClouds = Array.from({ length: 5 }, () =>
       generateRandomPosition(1024, 768)
     );
     setClouds(initialClouds);
 
+    // Generate initial birds (avoid aircraft position)
     const initialBirds = Array.from({ length: 3 }, () =>
-      generateRandomPosition(1024, 768)
+      generateRandomPosition(1024, 768, aircraftPosition)
     );
     setBirds(initialBirds);
 
+    // Generate initial parachutes (avoid aircraft position)
     const initialParachutes = Array.from({ length: 2 }, () =>
-      generateRandomPosition(1024, 768)
+      generateRandomPosition(1024, 768, aircraftPosition)
     );
     setParachutes(initialParachutes);
 
+    // Generate initial stars (avoid aircraft position)
     const initialStars = Array.from({ length: 5 }, () =>
-      generateRandomPosition(1024, 768)
+      generateRandomPosition(1024, 768, aircraftPosition)
     );
     setStarsElements(initialStars);
   }, []);
@@ -340,23 +354,25 @@ const useGameLogic = () => {
     setDifficultyLevel(0);
 
     // Regenerate initial game elements
-    const initialClouds = Array.from({ length: 7 }, () =>
+    const aircraftPosition = { x: 512, y: 384 }; // Aircraft's initial position
+
+    const initialClouds = Array.from({ length: 5 }, () =>
       generateRandomPosition(1024, 768)
     );
     setClouds(initialClouds);
 
-    const initialBirds = Array.from({ length: 5 }, () =>
-      generateRandomPosition(1024, 768)
+    const initialBirds = Array.from({ length: 3 }, () =>
+      generateRandomPosition(1024, 768, aircraftPosition)
     );
     setBirds(initialBirds);
 
-    const initialParachutes = Array.from({ length: 10 }, () =>
-      generateRandomPosition(1024, 768)
+    const initialParachutes = Array.from({ length: 2 }, () =>
+      generateRandomPosition(1024, 768, aircraftPosition)
     );
     setParachutes(initialParachutes);
 
-    const initialStars = Array.from({ length: 10 }, () =>
-      generateRandomPosition(1024, 768)
+    const initialStars = Array.from({ length: 5 }, () =>
+      generateRandomPosition(1024, 768, aircraftPosition)
     );
     setStarsElements(initialStars);
   }, []);
