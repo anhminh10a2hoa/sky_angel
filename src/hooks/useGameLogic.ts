@@ -156,33 +156,49 @@ const useGameLogic = () => {
   // Handle aircraft movement
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (isPaused || !isGameStarted) return;
+      if (!isGameStarted) return;
 
-      setAircraftPosition((prev) => {
-        let newX = prev.x;
-        let newY = prev.y;
-
-        switch (event.key) {
-          case 'ArrowLeft':
-            newX = Math.max(0, prev.x - 10);
-            break;
-          case 'ArrowRight':
-            newX = Math.min(974, prev.x + 10);
-            break;
-          case 'ArrowUp':
-            newY = Math.max(0, prev.y - 10);
-            break;
-          case 'ArrowDown':
-            newY = Math.min(718, prev.y + 10);
-            break;
-          default:
-            break;
-        }
-
-        return { x: newX, y: newY };
-      });
+      switch (event.keyCode) {
+        case 37: // Left arrow
+          if (!isPaused) {
+            setAircraftPosition((prev) => ({
+              x: Math.max(0, prev.x - 10),
+              y: prev.y,
+            }));
+          }
+          break;
+        case 39: // Right arrow
+          if (!isPaused) {
+            setAircraftPosition((prev) => ({
+              x: Math.min(974, prev.x + 10),
+              y: prev.y,
+            }));
+          }
+          break;
+        case 38: // Up arrow
+          if (!isPaused) {
+            setAircraftPosition((prev) => ({
+              x: prev.x,
+              y: Math.max(0, prev.y - 10),
+            }));
+          }
+          break;
+        case 40: // Down arrow
+          if (!isPaused) {
+            setAircraftPosition((prev) => ({
+              x: prev.x,
+              y: Math.min(718, prev.y + 10),
+            }));
+          }
+          break;
+        case 32: // Space bar
+          setIsPaused((prev) => !prev);
+          break;
+        default:
+          break;
+      }
     },
-    [isPaused, isGameStarted]
+    [isGameStarted, isPaused]
   );
 
   useEffect(() => {

@@ -31,16 +31,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    height: '100%',
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    color: '#fff',
+    textAlign: 'center',
   },
   title: {
-    fontSize: '48px',
+    fontSize: '64px',
     fontWeight: 'bold',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-    marginBottom: '20px',
+    marginBottom: '40px',
+    fontFamily: '"Arial", sans-serif',
   },
   buttonContainer: {
     display: 'flex',
@@ -49,7 +52,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   button: {
     padding: '15px 30px',
-    fontSize: '20px',
+    fontSize: '24px',
     fontWeight: 'bold',
     color: '#fff',
     backgroundColor: '#007bff',
@@ -58,6 +61,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: 'pointer',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
     transition: 'background-color 0.3s ease, transform 0.2s ease',
+    fontFamily: '"Arial", sans-serif',
   },
 };
 

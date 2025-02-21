@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import backgroundImage from '../assets/background.jpg';
 
 interface GameOverProps {
   time: number;
@@ -12,23 +10,29 @@ const GameOver: React.FC<GameOverProps> = ({ time, stars, onRestart }) => {
   const [name, setName] = useState('');
 
   const handleSubmit = async () => {
+    if (!name) return;
+
     try {
-      await axios.post('http://xxxxxxxxx/register.php', {
-        name,
-        time,
-        stars,
+      // Send data to the server (if needed)
+      await fetch('http://xxxxxxxxx/register.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, time, stars }),
       });
+
       onRestart();
     } catch (error) {
-      console.error(error);
+      console.error('Error submitting score:', error);
     }
   };
 
   return (
     <div style={styles.container}>
-      <h1>Game Over</h1>
-      <p>Time: {time}</p>
-      <p>Stars: {stars}</p>
+      <h1 style={styles.title}>Game Over</h1>
+      <p style={styles.info}>Time: {time}</p>
+      <p style={styles.info}>Stars: {stars}</p>
       <input
         type="text"
         value={name}
@@ -36,12 +40,14 @@ const GameOver: React.FC<GameOverProps> = ({ time, stars, onRestart }) => {
         placeholder="Enter your name"
         style={styles.input}
       />
-      <button onClick={handleSubmit} disabled={!name} style={styles.button}>
-        Submit
-      </button>
-      <button onClick={onRestart} style={styles.button}>
-        Restart
-      </button>
+      <div style={styles.buttonContainer}>
+        <button style={styles.button} onClick={handleSubmit} disabled={!name}>
+          Submit
+        </button>
+        <button style={styles.button} onClick={onRestart}>
+          Restart
+        </button>
+      </div>
     </div>
   );
 };
@@ -53,29 +59,49 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    backgroundImage: `url(${backgroundImage})`,
+    backgroundImage: 'url(/src/assets/background.jpg)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: '#fff',
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: '48px',
+    fontWeight: 'bold',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    marginBottom: '20px',
+    fontFamily: '"Arial", sans-serif',
+  },
+  info: {
+    fontSize: '24px',
+    margin: '10px',
+    textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
   },
   input: {
     padding: '10px',
     fontSize: '16px',
-    margin: '10px',
+    margin: '20px',
     borderRadius: '5px',
     border: '1px solid #ccc',
+    width: '200px',
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    display: 'flex',
+    gap: '20px',
   },
   button: {
-    padding: '10px 20px',
+    padding: '15px 30px',
     fontSize: '18px',
+    fontWeight: 'bold',
     color: '#fff',
     backgroundColor: '#007bff',
     border: 'none',
-    borderRadius: '5px',
+    borderRadius: '10px',
     cursor: 'pointer',
-    margin: '10px',
-    boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
-    transition: 'background-color 0.3s ease',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+    transition: 'background-color 0.3s ease, transform 0.2s ease',
+    fontFamily: '"Arial", sans-serif',
   },
 };
 
