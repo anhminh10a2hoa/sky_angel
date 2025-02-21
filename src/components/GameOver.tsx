@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import useRankingStore from '../store/useRankingStore';
 import backgroundImage from '../assets/background.jpg';
 
 interface GameOverProps {
@@ -10,16 +10,13 @@ interface GameOverProps {
 
 const GameOver: React.FC<GameOverProps> = ({ time, stars, onRestart }) => {
   const [name, setName] = useState('');
+  const addRanking = useRankingStore((state) => state.addRanking);
 
   const handleSubmit = async () => {
     if (!name) return;
 
     try {
-      await axios.post('http://xxxxxxxxx/register.php', {
-        name,
-        time,
-        stars,
-      });
+      await addRanking(name, time, stars);
       onRestart();
     } catch (error) {
       console.error('Error submitting score:', error);

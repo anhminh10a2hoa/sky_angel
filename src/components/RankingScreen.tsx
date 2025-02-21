@@ -1,16 +1,13 @@
 import React from 'react';
 import backgroundImage from '../assets/background.jpg';
+import useRankingStore from '../store/useRankingStore';
 
 interface RankingScreenProps {
   onBackToStart: () => void;
 }
 
 const RankingScreen: React.FC<RankingScreenProps> = ({ onBackToStart }) => {
-  const rankingData = [
-    { name: 'Player 1', time: 120, stars: 15 },
-    { name: 'Player 2', time: 90, stars: 12 },
-    { name: 'Player 3', time: 60, stars: 10 },
-  ];
+  const rankings = useRankingStore((state) => state.rankings);
 
   return (
     <div style={styles.container}>
@@ -26,7 +23,7 @@ const RankingScreen: React.FC<RankingScreenProps> = ({ onBackToStart }) => {
             </tr>
           </thead>
           <tbody>
-            {rankingData.map((player, index) => (
+            {rankings.map((player, index) => (
               <tr key={index} style={styles.tr}>
                 <td style={styles.td}>{index + 1}</td>
                 <td style={styles.td}>{player.name}</td>

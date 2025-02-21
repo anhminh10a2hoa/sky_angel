@@ -32,14 +32,20 @@ const useGameLogic = () => {
   const maxDifficultyLevel = 5; // Maximum difficulty level
 
   // Generate random positions for game elements
-  const generateRandomPosition = (maxX: number, maxY: number, avoidPosition?: Position, minDistance: number = 100): Position => {
+  const generateRandomPosition = (
+    maxX: number,
+    maxY: number,
+    avoidPosition?: Position,
+    minDistance: number = 100
+  ): Position => {
     let x, y;
     do {
       x = Math.floor(Math.random() * maxX);
       y = Math.floor(Math.random() * maxY);
     } while (
       avoidPosition &&
-      Math.sqrt((x - avoidPosition.x) ** 2 + (y - avoidPosition.y) ** 2) < minDistance
+      Math.sqrt((x - avoidPosition.x) ** 2 + (y - avoidPosition.y) ** 2) <
+        minDistance
     );
 
     return { x, y };
@@ -163,7 +169,14 @@ const useGameLogic = () => {
     }, 50);
 
     return () => clearInterval(interval);
-  }, [isGameOver, isPaused, isGameStarted, parachuteSpeed, starSpeed, difficultyLevel]);
+  }, [
+    isGameOver,
+    isPaused,
+    isGameStarted,
+    parachuteSpeed,
+    starSpeed,
+    difficultyLevel,
+  ]);
 
   // Handle aircraft movement
   const handleKeyDown = useCallback(
@@ -234,7 +247,10 @@ const useGameLogic = () => {
   useEffect(() => {
     if (isGameOver || isPaused || !isGameStarted) return;
 
-    const newDifficultyLevel = Math.min(Math.floor(time / 30), maxDifficultyLevel); // Increase difficulty every 30 seconds
+    const newDifficultyLevel = Math.min(
+      Math.floor(time / 30),
+      maxDifficultyLevel
+    ); // Increase difficulty every 30 seconds
     setDifficultyLevel(newDifficultyLevel);
 
     // Adjust speeds based on difficulty
@@ -361,12 +377,12 @@ const useGameLogic = () => {
     );
     setClouds(initialClouds);
 
-    const initialBirds = Array.from({ length: 3 }, () =>
+    const initialBirds = Array.from({ length: 5 }, () =>
       generateRandomPosition(1024, 768, aircraftPosition)
     );
     setBirds(initialBirds);
 
-    const initialParachutes = Array.from({ length: 2 }, () =>
+    const initialParachutes = Array.from({ length: 6 }, () =>
       generateRandomPosition(1024, 768, aircraftPosition)
     );
     setParachutes(initialParachutes);
