@@ -9,6 +9,7 @@ interface RankingEntry {
 
 interface RankingStore {
   rankings: RankingEntry[];
+   
   // eslint-disable-next-line no-unused-vars
   addRanking: (name: string, time: number, stars: number) => Promise<void>;
 }

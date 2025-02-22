@@ -10,8 +10,15 @@ import globals from 'globals';
 export default [
   js.configs.recommended,
   {
+    ignores: [
+      'node_modules/',
+      '**/**/*.test.tsx',
+      'dist/',
+      'build/'
+    ]
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'],
-    ignores: ['node_modules/', 'dist/', 'build/', '**/**/*.test.tsx'],
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 2021,

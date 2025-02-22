@@ -9,6 +9,7 @@ import GameOver from './components/GameOver';
 import StartingScreen from './components/StartingScreen';
 import skyImage from './assets/sky.jpg';
 import RankingScreen from './components/RankingScreen';
+import GameButton from './components/GameButton';
 
 const App: React.FC = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -101,9 +102,9 @@ const App: React.FC = () => {
               <span style={styles.label}>Time:</span>
               <span style={styles.value}>{time}</span>
             </div>
-            <button style={styles.pauseButton} onClick={pauseGame}>
+            <GameButton color="green" onClick={pauseGame}>
               {isPaused ? 'Resume' : 'Pause'}
-            </button>
+            </GameButton>
           </div>
         </>
       )}
@@ -133,7 +134,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexDirection: 'column',
     gap: '10px',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: '20px',
+    paddingTop: '20px',
     borderRadius: '10px',
     color: '#fff',
     fontFamily: '"Arial", sans-serif',
@@ -142,6 +143,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
+    marginLeft: '20px',
   },
   label: {
     fontSize: '18px',

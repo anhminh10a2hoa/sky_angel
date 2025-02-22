@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import useRankingStore from '../store/useRankingStore';
 import backgroundImage from '../assets/background.jpg';
+import GameButton from './GameButton';
 
 interface GameOverProps {
   time: number;
@@ -36,12 +37,12 @@ const GameOver: React.FC<GameOverProps> = ({ time, stars, onRestart }) => {
         style={styles.input}
       />
       <div style={styles.buttonContainer}>
-        <button style={styles.button} onClick={handleSubmit} disabled={!name}>
+        <GameButton color="red" onClick={handleSubmit} disabled={!name}>
           Submit
-        </button>
-        <button style={styles.button} onClick={onRestart}>
-          Restart
-        </button>
+        </GameButton>
+        <GameButton color="orange" onClick={onRestart}>
+          Play again
+        </GameButton>
       </div>
     </div>
   );

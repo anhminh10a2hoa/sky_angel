@@ -1,5 +1,6 @@
 import React from 'react';
 import backgroundImage from '../assets/background.jpg';
+import GameButton from './GameButton';
 
 interface StartingScreenProps {
   onStartGame: () => void;
@@ -14,12 +15,12 @@ const StartingScreen: React.FC<StartingScreenProps> = ({
     <div style={styles.container}>
       <h1 style={styles.title}>Sky Angel</h1>
       <div style={styles.buttonContainer}>
-        <button style={styles.button} onClick={onStartGame}>
-          Start Game
-        </button>
-        <button style={styles.button} onClick={onShowRanking}>
+        <GameButton color="red" onClick={onStartGame}>
+          Play
+        </GameButton>
+        <GameButton color="orange" onClick={onShowRanking}>
           Ranking
-        </button>
+        </GameButton>
       </div>
     </div>
   );
@@ -47,21 +48,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     gap: '20px',
-  },
-  button: {
-    padding: '15px 30px',
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#fff',
-    backgroundColor: '#007bff',
-    border: 'none',
-    borderRadius: '10px',
-    cursor: 'pointer',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
-    transition: 'background-color 0.3s ease, transform 0.2s ease',
-    fontFamily: '"Arial", sans-serif',
   },
 };
 

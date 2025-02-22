@@ -1,8 +1,12 @@
 import React from 'react';
 import useRankingStore from '../store/useRankingStore';
 import './RankingScreen.css'; // Add a CSS file for styling
+import GameButton from './GameButton';
 
-const RankingScreen: React.FC = () => {
+interface RankingScreenProps {
+  onBackToStart: () => void;
+}
+const RankingScreen: React.FC<RankingScreenProps> = ({ onBackToStart }) => {
   const rankings = useRankingStore((state) => state.rankings);
 
   return (
@@ -27,6 +31,9 @@ const RankingScreen: React.FC = () => {
           ))
         )}
       </ol>
+      <GameButton color="blue" onClick={onBackToStart}>
+        Back To Start
+      </GameButton>
     </div>
   );
 };

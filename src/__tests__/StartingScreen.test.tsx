@@ -10,7 +10,7 @@ describe('StartingScreen Component', () => {
       <StartingScreen onStartGame={onStartGame} onShowRanking={onShowRanking} />
     );
 
-    expect(screen.getByText('Start Game')).toBeInTheDocument();
+    expect(screen.getByText('Play')).toBeInTheDocument();
     expect(screen.getByText('Ranking')).toBeInTheDocument();
   });
 
@@ -21,7 +21,7 @@ describe('StartingScreen Component', () => {
       <StartingScreen onStartGame={onStartGame} onShowRanking={onShowRanking} />
     );
 
-    fireEvent.click(screen.getByText('Start Game'));
+    fireEvent.click(screen.getByText('Play'));
     expect(onStartGame).toHaveBeenCalled();
   });
 
