@@ -10,12 +10,7 @@ import globals from 'globals';
 export default [
   js.configs.recommended,
   {
-    ignores: [
-      'node_modules/',
-      '**/**/*.test.tsx',
-      'dist/',
-      'build/'
-    ]
+    ignores: ['node_modules/', '**/**/*.test.tsx', 'dist/', 'build/'],
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
